@@ -1,0 +1,33 @@
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+// Define the MongoDB connection URL
+const mongoURL= process.env.MONGODB_URL_LOCAl // Replace 'mydatabase' with your database name
+//const mongoURL= process.env.MONGODB_URL;
+
+//set up MongoDB connection
+mongoose.connect(mongoURL)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+
+// Get the default connection 
+// Mongoose maintains a default connection object representing the MongoDB connection.
+const db = mongoose.connection;
+
+// Define event listeners for database connection
+
+db.on('connected', () =>{
+    console.log('connected to MongoDB server');
+});
+
+db.on('error', (err) =>{
+    console.error('MongoDB connection error:', err);
+});
+
+db.on('disconected',() =>{
+    console.log('MongoDB disconnected');
+});
+
+// Export to database connection
+module.exports = db;
